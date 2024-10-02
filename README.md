@@ -45,6 +45,15 @@ Cada módulo se comunica a través de interfaces, lo que facilita la inyección 
 - ./gradlew :boot-run:bootRun
 - http://localhost:8080/swagger-ui.html
 
+## Ejecutar localmente
+En la raiz del proyecto ejecutar el comando
+-   ./gradlew :boot-run:bootrun
+
+## Ejecutar usando Docker
+En la raiz del proyecto ejecutar el comando
+-  docker build -t inditex-api:latest .
+-  docker run -d -p 8080:8080 --name inditex-api inditex-api
+    
 ## Ejecutar pruebas de integracion
 En la raiz del proyecto ejecutar el comando
 
