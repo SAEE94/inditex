@@ -8,6 +8,5 @@
  */
 
 rootProject.name = 'inditex-api'
-include('boot-run', 'application', 'domain')
-include 'infrastructure'
+include('boot-run', 'application', 'domain', 'infrastructure')
 
