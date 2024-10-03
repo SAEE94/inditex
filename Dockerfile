@@ -13,11 +13,12 @@ COPY boot-run/ boot-run/
 COPY domain/ domain/
 COPY infrastructure/ infrastructure/
 
-# Compilar el proyecto
-RUN gradle build
+# Limpiar el cache de Gradle para reducir el tamaño de la imagen intermedia
+RUN gradle build --no-daemon && \
+    rm -rf /home/gradle/.gradle /home/gradle/.m2 /root/.gradle /root/.m2
 
-# Etapa 2: Generar la imagen final
-FROM openjdk:21-jdk
+# Etapa 2: Generar la imagen final con JRE
+FROM eclipse-temurin:21-jre
 
 # Crear un directorio para la aplicación
 WORKDIR /app
@@ -27,6 +28,9 @@ COPY --from=build /home/gradle/boot-run/build/libs/boot-run-0.0.1-SNAPSHOT.jar /
 
 # Exponer el puerto en el que la aplicación escucha
 EXPOSE 8080
+
+# Establecer una variable de entorno para minimizar el uso de memoria en contenedores pequeños
+ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
 
 # Comando para ejecutar la aplicación
 ENTRYPOINT ["java", "-jar", "/app/boot-run.jar"]
